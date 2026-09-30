@@ -78,4 +78,19 @@ public class RegrasSemCoberturaTest {
         assertEquals("AGENDADO", banho.getStatus());
     }
 
+
+    @Test
+    public void deveCustar150ReaisQuandoPorteDaConsultaVariar() {
+        // Arrange
+        LocalDateTime data = LocalDateTime.now().plusDays(1);
+        String[] portes = {"PEQUENO", "MEDIO", "GRANDE"};
+        for (String porte : portes) {
+            ConsultaVeterinaria consulta = new ConsultaVeterinaria(1, "Luna", porte, "Ana", data);
+            // Act
+            double preco = consulta.calcularPreco();
+            // Assert
+            assertEquals(150.0, preco, 0.001, "Porte: " + porte);
+        }
+    }
+
 }

@@ -1,0 +1,44 @@
+package br.com.fiap.petfiap;
+
+import br.com.fiap.petfiap.exception.StatusInvalidoException;
+import br.com.fiap.petfiap.model.Atendimento;
+import br.com.fiap.petfiap.model.Banho;
+import br.com.fiap.petfiap.model.ConsultaVeterinaria;
+import br.com.fiap.petfiap.model.Tosa;
+import br.com.fiap.petfiap.repository.AtendimentoRepository;
+import br.com.fiap.petfiap.service.AgendaService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class RegrasSemCoberturaTest {
+    @Mock
+    private AtendimentoRepository repository;
+    @InjectMocks
+    private AgendaService service;
+
+    @Test
+    public void deveCobrarPrecoCorrespondenteQuandoPorteDoBanhoVariar() {
+        // Arrange
+        LocalDateTime data = LocalDateTime.now().plusDays(1);
+        Banho pequeno = new Banho(1, "Luna", "PEQUENO", "Ana", data);
+        Banho medio = new Banho(2, "Luna", "MEDIO", "Ana", data);
+        Banho grande = new Banho(3, "Luna", "GRANDE", "Ana", data);
+        // Act
+        double precoPequeno = pequeno.calcularPreco();
+        double precoMedio = medio.calcularPreco();
+        double precoGrande = grande.calcularPreco();
+        // Assert
+        assertAll(() -> assertEquals(60.0, precoPequeno, 0.001),
+                () -> assertEquals(80.0, precoMedio, 0.001),
+                () -> assertEquals(100.0, precoGrande, 0.001));
+    }
+
+}

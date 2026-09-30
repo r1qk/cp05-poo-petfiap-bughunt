@@ -66,4 +66,16 @@ public class RegrasSemCoberturaTest {
         verify(repository, never()).save(any());
     }
 
+
+    @Test
+    public void deveRecusarAgendamentoQuandoDataHoraEstiverNoPassado() {
+        // Arrange
+        Banho banho = new Banho(1, "Luna", "MEDIO", "Ana", LocalDateTime.now().minusDays(1));
+        // Act
+        assertThrows(IllegalArgumentException.class, () -> service.agendar(banho));
+        // Assert
+        verifyNoInteractions(repository);
+        assertEquals("AGENDADO", banho.getStatus());
+    }
+
 }

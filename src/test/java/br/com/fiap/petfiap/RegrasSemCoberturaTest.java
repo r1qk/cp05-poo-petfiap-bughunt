@@ -41,4 +41,15 @@ public class RegrasSemCoberturaTest {
                 () -> assertEquals(100.0, precoGrande, 0.001));
     }
 
+
+    @Test
+    public void deveDurar60MinutosQuandoAtendimentoForTosa() {
+        // Arrange
+        Atendimento tosa = new Tosa(1, "Luna", "MEDIO", "Ana", LocalDateTime.now().plusDays(1));
+        // Act
+        int duracao = tosa.getDuracaoMinutos();
+        // Assert
+        assertEquals(60, duracao);
+    }
+
 }

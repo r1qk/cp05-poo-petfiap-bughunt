@@ -52,4 +52,18 @@ public class RegrasSemCoberturaTest {
         assertEquals(60, duracao);
     }
 
+
+    @Test
+    public void deveRecusarCancelamentoQuandoAtendimentoJaEstiverConcluido() {
+        // Arrange
+        Banho banho = new Banho(1, "Luna", "MEDIO", "Ana", LocalDateTime.now().plusDays(1));
+        banho.concluir();
+        when(repository.findById(1L)).thenReturn(Optional.of(banho));
+        // Act
+        assertThrows(StatusInvalidoException.class, () -> service.cancelar(1L));
+        // Assert
+        assertEquals("CONCLUIDO", banho.getStatus());
+        verify(repository, never()).save(any());
+    }
+
 }

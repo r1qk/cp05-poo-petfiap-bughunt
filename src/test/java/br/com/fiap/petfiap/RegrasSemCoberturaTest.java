@@ -93,4 +93,18 @@ public class RegrasSemCoberturaTest {
         }
     }
 
+
+    @Test
+    public void deveRecusarConclusaoQuandoAtendimentoEstiverCancelado() {
+        // Arrange
+        Banho banho = new Banho(1, "Luna", "MEDIO", "Ana", LocalDateTime.now().plusDays(1));
+        banho.cancelar();
+        when(repository.findById(1L)).thenReturn(Optional.of(banho));
+        // Act
+        assertThrows(StatusInvalidoException.class, () -> service.concluir(1L));
+        // Assert
+        assertEquals("CANCELADO", banho.getStatus());
+        verify(repository, never()).save(any());
+    }
+
 }

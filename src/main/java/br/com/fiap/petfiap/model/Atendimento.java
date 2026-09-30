@@ -62,6 +62,9 @@ public abstract class Atendimento {
 
     // Cancela o atendimento
     public void cancelar() {
+        if (!"AGENDADO".equals(status)) {
+            throw new StatusInvalidoException("Atendimento " + protocolo + " nao pode ser cancelado: status " + status);
+        }
         status = "CANCELADO";
     }
 
